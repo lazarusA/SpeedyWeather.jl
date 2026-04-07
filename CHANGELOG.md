@@ -1,6 +1,86 @@
 # Changelog
 
 ## Unreleased
+
+<<<<<<< gm/perm-ice-cap
+- Remove snow runoff, add snow depth cap [#1017](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1017)
+=======
+- [BREAKING] Rename `temperature_reference`->`reference_temperature`, `pressure_reference`->`reference_pressure` [#1025](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1025)
+- [BREAKING] Prognostic variables renamed [#1025](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1025)
+>>>>>>> main
+- Make default KolmogorovFlow weaker [#1030](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1030)
+- GitHub Action Cache updated to v3 [#1029](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1029)
+- RossbyHaurwitz initial condition example corrected [#1027](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1027)
+- [BREAKING] model.dyanmics_only instead of .physics [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- [BREAKING] Kernel launching now in SpeedyWeatherInternals.KernelLaunching [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- Pretty printing with StyledStrings [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- [BREAKING] Particle advection determines nparticles [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- Global parameterizations [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- [BREAKING] set! adapted to variable groups and namespaces [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- [BREAKING] Initial conditions modularised [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- [BREAKING] New dynamic variable system based on NamedTuples [#969](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/969)
+- README CI Badges [#1024](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1024)
+- GitHub Action Julia chache updated to v3 [#1020](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1020)
+- Broadcasting for LTA and RingGrids revised [#977](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/977)
+- Reactant support for the BarotropicModel and Reactant architecture basics [#970](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/970)
+- Minor fixes for Metal GPUs [#1019](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1019)
+- Delete unused/moved zenith.jl file [#1016](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1016)
+- Add `get_output_path(::Simulation)` to retrieve the output file path [#1011](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1011)
+- GitHub `actions/setup-node` updated to v6 [#1009](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1009)
+- Documentation for `MatrixSpectralTransform` added to SpeedyTransforms docs [#1006](https://github.com/SpeedyWeather/SpeedyWeather.jl/issues/1006)
+- MatrixSpectralTransform implemented [#952](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/952)
+- `get_asset` now supports optional `output_grid` [#1004](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1004)
+- Switch documentation to DocumenterVitepress for a modern VitePress-based theme [#1002](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1002) [#1008](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1008)
+- Move `get_asset` to RingGrids with NCDatasets extension; make `assets_url` and `version` kwargs [#996](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/996)
+- Small fixes to improve Enzyme CI [#995](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/995)
+- JuliaActions Cache upgraded to v3 [#1001](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1001)
+- Remove `@Const` from kernels [#1000](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1000)
+- Add CLAUDE.md with codebase summary for AI-assisted development [#999](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/999)
+- Get SpeedyWeatherAssets on the fly [#983](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/983)
+- Change from MIT to EUPL license [#992](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/992)
+
+## v0.18.1
+
+- Fix docs colatitude -> latitude terminology [#990](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/990)
+- Progress bar with additional information [#989](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/989)
+- Bug fix: Ozone absorption now deposited into stratospheric layers [#986](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/986)
+- Adds a drag term to winds above a certain speed limit [#987](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/987)
+
+## v0.18
+
+- Installation main instructions in docs + schedule tests [#979](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/979)
+- Bug fix: Cloud reflectivity on half level above not below [#978](https://github.dev/SpeedyWeather/SpeedyWeather.jl/pull/978)
+- Fix absorptivity_water_vapor and absorptivity_cloud_base default values [#974](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/974)
+- Particle advection GPU ready [#897](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/897)
+- Enzyme compat relaxed as Enzyme bug was fixed and uv_from_vordiv! kernel version used on CPU as well [#971](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/971)
+- GitHub Actions: Cache updated [#945](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/945)
+- The number of soil layers is now solely defined by the land model and not in the `SpectralGrid` anymore [#898](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/898)   
+- Revised GPU benchmarks to include full GPU models [#946](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/946) and the dynamical core [#967](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/967)
+- Label-based modular skip CI mechanism for github and buildkite [#957](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/957)
+- Monorepo structure and separate tests [#957](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/957)
+- Changed OneBandShortwave to ij logic [#955](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/955)
+- Fixes some typos and LaTeX renderings in the docs [#953](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/953)
+- Fix bug in parameter subsetting [#960](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/960)
+- Follow-up to #783: finalize @param/@component markers [#935](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/935)
+- Adjust fill!(::PrognosticVariables, x) to new variable system [#949](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/949)
+- Code formatting with Runic applied [#950](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/950) [#964](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/964)
+- Implicit correction kernelized and GPU-ready [#891](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/891)
+- The dynamical core of the primitive equations is now GPU-ready with kernelized implementations [#934](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/934)
+- EarthDryAtmosphere to dispatch like PrimitiveDryModel inside kernels [#944](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/944)
+- copyto! for LowerTriangularArray revised [#941](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/941)
+- Sea ice and snow insulation in surface flux computation [#873](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/873)
+- Boundary layer drag revisited with ocean/land roughness and new defaults [#873](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/873)
+- OneBandLongwave radiation implemented and default [#873](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/873)
+- Initial conditions revised to take in a `SpectralGrid` to ensure correct number type [#927](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/927)[#928](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/928)
+- Diagnostic and prognostic variables partially revised to NamedTuples and variables system introduced to allow to add to them modularly [#885](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/885)
+- Parameterizations with KernelAbstractions [#873](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/873) [#878](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/878) [#924](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/924) [#931](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/931) [#933](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/933) [#942](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/942)
+- uv_from_vordiv! kernel version used [#893](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/893)
+- Fixes some typos and formatting/LaTeX rendering in Docs [#939](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/939)
+- Land snow model [#833](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/833)
+- Updated extended differentiability tests [#929](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/929)
+- GitHub Actions Checkout updated to version 6 [#926](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/926)
+- `set!(::Field,::Functions,...)` works now on GPU (however by explicitly transferring between GPU and CPU) [#925](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/925)
+- Fixes round trip transform tests [#921](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/921)
 - Updated docs CairoMakie compatibility to "0.12, 0.13, 0.14, 0.15"
 - OneBandShortwave radiation implemented with diagnostic clouds [#888](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/888)
 - AMDGPU extension [#901](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/901)
@@ -24,10 +104,9 @@
 - Zenith constructors [#889](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/889)
 - More general forcing of pressure, vorticity and divergence [#855](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/855)
 
-
 ## v0.17.3
 
-- Add missing compat entires for SpeedyWeatherInternals [#883](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/883)
+- Add missing compat entries for SpeedyWeatherInternals [#883](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/883)
 - Move SpeedyParameters to SpeedyWeatherInternals [#880](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/880)
 - Remove JOSS paper draft workflow [#874](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/874)
 - Change particle tracking to every 4 hours [#881](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/881)
@@ -64,7 +143,7 @@
 - Soil moisture initial conditions [#830](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/830)
 - Diagnose snow fall from large-scale condensation [#817](https://github.dev/SpeedyWeather/SpeedyWeather.jl/pull/817)
 - Fix output_dt for JLD2Output [#829](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/829)
-- Fix some missign scratch memory usage in the transforms [#828](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/828)
+- Fix some missing scratch memory usage in the transforms [#828](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/828)
 - GitHub actions checkout v5 [#826](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/826)
 - Compatibility for JLD2 v0.6 [#825](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/825)
 - Introduce `nothing` as valid model component [#822](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/822)

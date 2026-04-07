@@ -4,7 +4,7 @@ The following showcases some examples of how to set the initial conditions
 for the prognostic variables in SpeedyWeather.jl. In essence there
 are three ways to do this
 
-1. Change the arrays in `simulation.prognostic_variables`
+1. Change the arrays in `simulation.variables.prognostic`
 2. Use the `set!` function
 3. Set the `initial_conditions` component of a model
 
@@ -21,17 +21,16 @@ methods simply as 1, 2, 3.
 
 ## Rossby-Haurwitz wave in a BarotropicModel
 
-We define a `BarotropicModel` of some resolution but keep all its components
-as default
+We define a `BarotropicModel` of some resolution without forcing and drag
 
 ```@example haurwitz
 using SpeedyWeather
 spectral_grid = SpectralGrid(trunc=63, nlayers=1)
-model = BarotropicModel(spectral_grid)
+model = BarotropicModel(spectral_grid, forcing=nothing, drag=nothing)
 simulation = initialize!(model)
 ```
 
-Now `simulation.prognostic_variables` contains already some
+Now `simulation.variables.prognostic` contains already some
 initial conditions as defined by `model.initial_conditions` (that's method 3).
 Regardless of what those are, we can still mutate them
 before starting a simulation, but if you (re-)initialize the model,
@@ -44,10 +43,10 @@ vorticity ``\zeta`` (which is the sole prognostic variable in the
 barotropic vorticity model) as
 
 ```math
-ζ(λ, θ) = 2ω*\sin(θ) - K*\sin(θ)*\cos(θ)^m*(m^2 + 3m + 2)*\cos(m*λ)
+ζ(λ, θ) = 2ω \sin(θ) - K \sin(θ) \cos(θ)^m (m^2 + 3m + 2) \cos(m λ)
 ```
 with longitude ``\lambda`` and latitude ``\theta``. The parameters
-are zonal wavenumber (order) ``m = 4``, frequencies ``\omega = 7.848e-6s^{-1}, K = 7.848e-6s^{-1}``.
+are zonal wavenumber (order) ``m = 4``, frequencies ``\omega = 7.848 \times 10^{-6}~s^{-1}``, ``K = 7.848  \times 10^{-6}~s^{-1}``.
 Now setting these initial conditions is as simple as
 
 ```@example haurwitz
@@ -56,7 +55,7 @@ m = 4
 K = 7.848e-6
 
 ζ(λ, θ, σ) = 2ω*sind(θ) - K*sind(θ)*cosd(θ)^m*(m^2 + 3m + 2)*cosd(m*λ)
-set!(simulation, vor=ζ)
+set!(simulation, vorticity=ζ)
 ```
 
 with only two difference from the mathematical notation. (1) SpeedyWeather's
@@ -73,7 +72,7 @@ One may filter out low values of spectral vorticity with some cut-off amplitude
 c = 1e-10       # cut-off amplitude
 
 # 1 = first leapfrog timestep of spectral vorticity
-vor = get_step(simulation.prognostic_variables.vor, 1)      # get the first leapfrog step
+vor = get_step(simulation.variables.prognostic.vorticity, 1)      # get the first leapfrog step
 low_values = abs.(vor) .< c
 vor[low_values] .= 0
 nothing # hide
@@ -87,7 +86,7 @@ back
 
 ```@example haurwitz
 # [:, 1, 1] for all values on first layer and first leapfrog step
-vor = simulation.prognostic_variables.vor[:, 1, 1]
+vor = simulation.variables.prognostic.vorticity[:, 1, 1]
 vor_grid = transform(vor)
 
 using CairoMakie
@@ -106,9 +105,9 @@ a simulation for some days
 run!(simulation, period=Day(3))
 
 # a running simulation always transforms spectral variables
-# so we don't have to do the transform manually but just pull 
+# so we don't have to do the transform manually but just pull
 # layer 1 (there's only 1) from the diagnostic variables
-vor = simulation.diagnostic_variables.grid.vor_grid[:, 1]
+vor = simulation.variables.grid.vorticity[:, 1]
 
 heatmap(vor, title="Relative vorticity [1/s], Rossby Haurwitz wave after 3 days")
 save("haurwitz_day10.png", ans) # hide
@@ -125,7 +124,7 @@ details.
 
 ## Rossby-Haurwitz wave in a ShallowWater model
 
-For the shallow water model Williamson et al., 1992[^Williamson92] also give 
+For the shallow water model Williamson et al., 1992[^Williamson92] also give
 initial conditions for the prognostic variable height ``h = h_0 + \eta`` (equivalent to geopotential).
 The layer thickness is ``h_0`` and ``\eta`` is the interface displacement
 of that layer. SpeedyWeather however, uses as prognostic variable ``\eta``
@@ -133,13 +132,13 @@ for which the initial conditions are
 
 ```math
 \begin{align}
-η(λ, θ) &= \frac{R^2}{g} \left( A(θ) + B(θ) \cos(mλ) + C(θ) \cos(2mλ) \right), \\
+η(λ, θ) &= \frac{R^2}{g} \left[ A(θ) + B(θ) \cos(mλ) + C(θ) \cos(2mλ) \right], \\
 
-A(θ) &= \frac{ω(2Ω + ω)}{2}\cos(θ)^2 + \frac{1}{4}K^2\cos(θ)^{2m}\left((m+1)\cos(θ)^2 + (2m^2 - m - 2) - \frac{2m^2}{\cos(θ)^2}\right), \\
+A(θ) &= \frac{ω(2Ω + ω)}{2}\cos(θ)^2 + \frac{1}{4}K^2\cos(θ)^{2m}\left[(m+1)\cos(θ)^2 + (2m^2 - m - 2) - \frac{2m^2}{\cos(θ)^2}\right], \\
 
-B(θ) &= \frac{2(Ω + ω)K}{(m+1)(m+2)} \cos(θ)^m\left((m^2 + 2m + 2) - (m+1)^2\cos(θ)^2\right), \\
+B(θ) &= \frac{2(Ω + ω)K}{(m+1)(m+2)} \cos(θ)^m\left[(m^2 + 2m + 2) - (m+1)^2\cos(θ)^2\right], \\
 
-C(θ) &= \frac{1}{4}K^2 \cos(θ)^{2m}\left((m+1)\cos(θ)^2 - (m + 2)\right).
+C(θ) &= \frac{1}{4}K^2 \cos(θ)^{2m}\left[(m+1)\cos(θ)^2 - (m + 2)\right].
 
 \end{align}
 ```
@@ -160,19 +159,21 @@ Rossby-Haurwitz wave in the shallow water model without any influences from orog
 
 ```@example haurwitz
 spectral_grid = SpectralGrid(trunc=63, nlayers=1)
-initial_conditions = RossbyHaurwitzWave()
+initial_conditions = RossbyHaurwitzWave(spectral_grid)
 orography = NoOrography(spectral_grid)
-model = ShallowWaterModel(; spectral_grid, initial_conditions, orography)
+forcing = nothing
+drag = nothing
+model = ShallowWaterModel(spectral_grid; forcing, drag, initial_conditions, orography)
 simulation = initialize!(model)
 run!(simulation, period=Day(8))
 
-vor = simulation.diagnostic_variables.grid.vor_grid[:, 1]
+vor = simulation.variables.grid.vorticity[:, 1]
 heatmap(vor, title="Relative vorticity [1/s], shallow water Rossby Haurwitz wave after 8 days")
 save("haurwitz_sw.png", ans) # hide
 nothing # hide
 ```
 
-There is a noticable difference from the result in the barotropic model, where
+There is a noticeable difference from the result in the barotropic model, where
 the wave moves around the globe keeping its shape. Here, it deforms around the
 poles and the vorticity patches develop an internal structure.
 
@@ -196,15 +197,18 @@ and let's switch off all physics parameterizations with `physics=false`.
 
 ```@example haurwitz
 spectral_grid = SpectralGrid(trunc=42, nlayers=8)
-initial_conditions = InitialConditions(
-                        vordiv=RossbyHaurwitzWave(),
-                        temp=JablonowskiTemperature(),
-                        pres=PressureOnOrography())
+initial_conditions = (;
+                        vordiv=RossbyHaurwitzWave(spectral_grid),
+                        temp=JablonowskiTemperature(spectral_grid),
+                        pres=PressureOnOrography(spectral_grid))
 
 orography = NoOrography(spectral_grid)
 time_stepping = Leapfrog(spectral_grid, Δt_at_T31=Minute(30))   # 30min timestep scaled linearly
 
-model = PrimitiveDryModel(spectral_grid; time_stepping, initial_conditions, orography, physics=false)
+forcing = nothing
+drag = nothing
+
+model = PrimitiveDryModel(spectral_grid; time_stepping, initial_conditions, orography, forcing, drag, dynamics_only=false)
 simulation = initialize!(model)
 run!(simulation, period=Day(5))
 nothing # hide
@@ -215,7 +219,7 @@ Note that we chose a lower resolution here (T42) as we are simulating
 (`[:, 8]` is the lowermost layer)
 
 ```@example haurwitz
-vor = simulation.diagnostic_variables.grid.vor_grid[:, 8]
+vor = simulation.variables.grid.vorticity[:, 8]
 heatmap(vor, title="Relative vorticity [1/s], primitive Rossby-Haurwitz wave")
 
 save("haurwitz_primitive.png", ans) # hide
@@ -223,7 +227,7 @@ nothing # hide
 ```
 ![Rossby-Haurwitz wave in primitive equations](haurwitz_primitive.png)
 
-As you can see the actual Rossby-Haurwitz wave is not as stable anymore
+As you can see the actual Rossby-Haurwitz wave is not as stable any more
 (because those initial conditions are not a stable solution of the primitive equations)
 and so the 3-day integration looks already different from the barotropic model!
 
