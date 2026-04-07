@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- [BREAKING] Rename `temperature_reference`->`reference_temperature`, `pressure_reference`->`reference_pressure` [#1025](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1025)
+- [BREAKING] Prognostic variables renamed [#1025](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1025)
 - Make default KolmogorovFlow weaker [#1030](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1030)
 - GitHub Action Cache updated to v3 [#1029](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1029)
 - RossbyHaurwitz initial condition example corrected [#1027](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1027)
