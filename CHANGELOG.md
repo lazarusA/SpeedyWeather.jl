@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- [BREAKING] WriteModelComponentFile and ManualOrography [#1040](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1040)
 - `JLD2Output` revised to be able to select groups, additional `ArrayOutput` option to output to RAM [#1026](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1026)
 - ParallelTestRunner for SpeedyWeather CI [#1033](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1033)
 - Remove snow runoff, add snow depth cap [#1017](https://github.com/SpeedyWeather/SpeedyWeather.jl/pull/1017)
