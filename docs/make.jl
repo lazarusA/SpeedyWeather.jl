@@ -93,7 +93,7 @@ end
 
 DocumenterVitepress.deploydocs(
     repo = "github.com/lazarusA/SpeedyWeather.jl.git",
-    deploy_repo = "github.com/SpeedyDocs.git",
+    deploy_repo = "github.com/lazarusA/SpeedyDocs.git",
     devbranch = "main",
     push_preview = true,
 )
