@@ -4,10 +4,10 @@ using SpeedyWeatherInternals, LowerTriangularArrays, RingGrids, SpeedyTransforms
 
 makedocs(
     format = DocumenterVitepress.MarkdownVitepress(
-        repo = "github.com/SpeedyWeather/SpeedyWeather.jl",
+        repo = "github.com/lazarusA/SpeedyWeather.jl",
         devbranch = "main",
         devurl = "dev",
-        deploy_url = "./SpeedyWeatherDocumentation/" # adjust if cross-repo deployment to ./repo_name/
+        deploy_url = "./SpeedyDocs/" # adjust if cross-repo deployment to ./repo_name/
     ),
     sitename = "SpeedyWeather.jl",
     authors = "M Klöwer and SpeedyWeather contributors",
@@ -92,8 +92,8 @@ for pattern in [r"\.jld2", r"\.nc"]
 end
 
 DocumenterVitepress.deploydocs(
-    repo = "github.com/SpeedyWeather/SpeedyWeather.jl",
-    deploy_repo = "github.com/SpeedyWeather/SpeedyWeatherDocumentation",
+    repo = "github.com/lazarusA/SpeedyWeather.jl.git",
+    deploy_repo = "github.com/lazarusA/SpeedyDocs.git",
     devbranch = "main",
     push_preview = true,
 )

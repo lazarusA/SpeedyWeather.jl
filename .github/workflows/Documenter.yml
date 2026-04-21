@@ -1,39 +1,56 @@
-name: Documentation
+# Sample workflow for building and deploying a VitePress site to GitHub Pages
+#
+name: Documenter
 
 on:
+  # Runs on pushes targeting the `master` branch. Change this to `main` if you're
+  # using the `main` branch as the default branch.
   push:
     branches:
       - main
-    tags: '*'
+    tags: ['*']
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  statuses: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
+  # Build job
   build:
-    name: build
-    # don't run if any of these labels are present
-    if: >
-      !(  
-      contains(github.event.pull_request.labels.*.name, 'skip-ci') ||
-      contains(github.event.pull_request.labels.*.name, 'skip-docs')
-      )
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: julia-actions/setup-julia@latest
-        with:
-          version: '1.12'
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: docs/package.json
-      - name: Install Node.js dependencies
-        run: npm install
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v2
+      - name: Load Julia packages from cache
+        id: julia-cache
+        uses: julia-actions/cache@v2
+      - name: Instantiate docs environment
         working-directory: docs
-      - name: Install Julia dependencies
-        run: julia --color=yes --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path = "SpeedyWeather")); Pkg.instantiate()'
-      - name: Build and deploy
+        run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+      - name: Build and deploy docs
+        working-directory: docs
+        run: julia --project=. make.jl
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}       # For authentication with GitHub Actions token
-          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY2 }}  # For authentication with SSH deploy key
-        run: JULIA_DEBUG=Documenter julia --color=yes --project=docs/ docs/make.jl
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+          JULIA_DEBUG: "Documenter"
+      - name: Save Julia depot cache on cancel or failure
+        id: julia-cache-save
+        if: cancelled() || failure()
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ${{ steps.julia-cache.outputs.cache-paths }}
+          key: ${{ steps.julia-cache.outputs.cache-key }}
